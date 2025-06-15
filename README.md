@@ -3,6 +3,8 @@
 Ce projet est une application e-commerce développée avec **Symfony 7**, **API Platform** et une interface d’administration.  
 Il permet la gestion de produits, d’utilisateurs, de notifications et expose une API REST sécurisée pour les administrateurs.
 
+La Base de données est disponible dans le repot
+
 ---
 
 ## Fonctionnalités principales
