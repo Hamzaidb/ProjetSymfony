@@ -3,6 +3,14 @@
 {% block title %}{{ produit.nom }}{% endblock %}
 
 {% block body %}
+{% if app.request.get('bought') %}
+    <div class="popup-success" id="popup-success">
+        <div class="popup-content">
+            <p>Félicitations ! Vous avez acheté le produit "{{ produit.nom }}" pour {{ produit.prix }} points.</p>
+            <span class="close-btn" onclick="document.getElementById('popup-success').style.display='none'">&times;</span>
+        </div>
+    </div>
+{% endif %}
 <div class="product-page-container">
     <div class="product-card-detail">
         <h1 class="product-title">{{ produit.nom }}</h1>

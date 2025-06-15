@@ -60,6 +60,9 @@ class ProductController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'Achat effectué avec succès !');
-        return $this->redirectToRoute('product_show', ['id' => $produit->getId()]);
+        return $this->redirectToRoute('product_show', [
+    'id' => $produit->getId(),
+    'bought' => 1
+]);
     }
 }
