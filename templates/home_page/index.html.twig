@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <div class="home-container">
+            <h1>Bienvenue {{ app.user.prenom }} {{ app.user.nom }}!</h1>
+            <h2>Nos Produits</h2>
+            <div class="product-grid">
+                {% for produit in produits %}
+                    <div class="product-card">
+                        <h3>
+                            <a href="{{ path('product_show', {id: produit.id}) }}">
+                                {{ produit.nom }}
+                            </a>
+                        </h3>
+                        <p class="prix">categorie : {{ produit.category }}</p>
+                        <p class="prix">{{ produit.prix }} points</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh;">
+            <h1 style="font-size:2.5rem; margin-bottom: 1rem;">Bienvenue dans le shop</h1>
+            <p style="font-size:1.3rem;">Connectez-vous pour accéder à la boutique</p>
+        </div>
+    {% endif %}
+{% endblock %}

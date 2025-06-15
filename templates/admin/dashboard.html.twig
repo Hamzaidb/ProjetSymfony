@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+{% block title %}Back Office{% endblock %}
+{% block body %}
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Bienvenue dans le Back Office</h1>
+    <p class="dashboard-desc">Gérez les utilisateurs, produits et notifications.</p>
+
+    <div class="dashboard-nav">
+        <a href="#users" class="dashboard-link">Utilisateurs</a>
+        <a href="#products" class="dashboard-link">Produits</a>
+        <a href="#notifications" class="dashboard-link">Notifications</a>
+    </div>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-value">{{ users|length }}</div>
+            <div class="stat-label">Utilisateurs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ produits|length }}</div>
+            <div class="stat-label">Produits</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ notifications|length }}</div>
+            <div class="stat-label">Notifications</div>
+        </div>
+    </div>
+
+    <h2 id="users">Utilisateurs</h2>
+    <div class="table-container">
+            <form method="post" action="{{ path('admin_users_add_points') }}" style="display:inline;">
+            <button type="submit" class="btn-dashboard" onclick="return confirm('Ajouter 1000 points à tous les utilisateurs actifs ?')">
+                Ajouter 1000 points à tous les utilisateurs actifs
+            </button>
+        </form>
+        <table class="dashboard-table">
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Points</th>
+                <th>Actif</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.points }}</td>
+                    <td>
+                        <span class="badge {{ user.actif ? 'badge-success' : 'badge-danger' }}">
+                            {{ user.actif ? 'Oui' : 'Non' }}
+                        </span>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('admin_user_toggle', {id: user.id}) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggle-user-' ~ user.id) }}">
+                        {% if user.actif %}
+                            <button type="submit" class="action-link action-delete" onclick="return confirm('Désactiver cet utilisateur ?')">Désactiver</button>
+                        {% else %}
+                            <button type="submit" class="action-link" onclick="return confirm('Activer cet utilisateur ?')">Activer</button>
+                        {% endif %}
+                    </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h2 id="products">Produits</h2>
+    <a href="{{ path('admin_produit_new') }}" class="btn-dashboard btn-add">Ajouter un produit</a>
+    <div class="table-container">
+        <table class="dashboard-table">
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.nom }}</td>
+                    <td>{{ produit.prix }}</td>
+                    <td>
+                        <a href="{{ path('admin_produit_edit', {id: produit.id}) }}" class="action-link">Modifier</a>
+                        <form method="post" action="{{ path('admin_produit_delete', {id: produit.id}) }}" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Supprimer ce produit ?')" class="action-link action-delete">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h2 id="notifications">Notifications</h2>
+    <ul class="notif-list">
+        {% for notif in notifications %}
+            <li>
+                <span class="notif-date">{{ notif.createdAt|date('d/m/Y H:i') }}</span>
+                <span class="notif-label">{{ notif.label }}</span> :
+                <span class="notif-msg">{{ notif.message }}</span>
+            </li>
+        {% else %}
+            <li>Aucune notification</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

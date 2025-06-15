@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SymfonyShop{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <a href="{{ path('app_home_page') }}" class="logo">SymfonyShop</a>
+            <div class="header-right">
+                {% if app.user %}
+                    <span class="user-info">{{ app.user.points }} points</span>
+                    <a href="{{ path('app_profile') }}" class="header-link">Profil</a>
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <a href="{{ path('admin_dashboard') }}" class="header-link notif-link">
+                        Back Office
+                        {% if notifications|length > 0 %}
+                            <span class="notif-badge">{{ notifications|length }}</span>
+                        {% endif %}
+                    </a>                    
+                    {% endif %}
+                    <a href="{{ path('app_logout') }}" class="header-link">Déconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="header-link">Connexion</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% block body %}{% endblock %}
+</body>
 </html>
