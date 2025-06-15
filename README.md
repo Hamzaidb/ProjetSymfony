@@ -103,7 +103,6 @@ Il permet la gestion de produits, d’utilisateurs, de notifications et expose u
 - `public/` : Racine web
 - `config/` : Configuration Symfony et bundles
 - `migrations/` : Migrations Doctrine
-- `tests/` : Tests unitaires et fonctionnels
 
 ---
 
